@@ -1,20 +1,32 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StatManager : MonoBehaviour
 {
     [Header("Any")]
+    [HideInInspector]
     public bool startCorutine;
 
     [Header("PlayerStats")]
     public float PlayerHP;
+    [SerializeField]
+    private float MaxHP;
+
     public float PlayerMP;
+    [SerializeField]
+    private float MaxMP;
+
     public float PlayerATK;
     public float PlayerSkillATK1;
     public int PlayerSkillATK2;
+
     public float PlayerLevelAmount;
+    private float MaxEXP = 100;
+    [HideInInspector]
+    public int level = 1;
 
     [Header("EnemyStats")]
     public List<GameObject> Enemies = new List<GameObject>();
@@ -23,16 +35,45 @@ public class StatManager : MonoBehaviour
     public List<float> EnemyATK = new List<float>();
     public float[] EnemyEXP;
 
+    private void Awake()
+    {
+        PlayerHP = MaxHP;
+        PlayerMP = MaxMP;
+    }
+
+    public void StatUp()
+    {
+        MaxHP += MaxHP / 10;
+        MaxMP += MaxMP / 10;
+        PlayerATK += PlayerATK / 10;
+    }
+
+    public void LevelUp()
+    {
+        if (PlayerLevelAmount >= MaxEXP)
+        {
+            Debug.Log("adfs");
+            PlayerLevelAmount -= MaxEXP;
+            MaxEXP *= 1.5f;
+            level++;
+            StatUp();
+        }
+    }
 
     public IEnumerator Attack(float Time)
     {
         startCorutine = true;
         Debug.Log("IsCorutine");
         EnemyHP[0] -= PlayerATK;
+        if(PlayerMP < MaxHP)
+        {
+            PlayerMP += 5;
+        }
         if (EnemyHP[0] <= 0)
         {
             Debug.Log(Enemies[0].GetComponentInChildren<Transform>().tag);
             PlayerLevelAmount += (EnemiesTag[0].CompareTag("Level1")) ? EnemyEXP[0] : (EnemiesTag[0].CompareTag("Level2")) ? EnemyEXP[1] : EnemyEXP[2];
+            LevelUp();
             Destroy(Enemies[0]);
             Enemies.RemoveAt(0);
             EnemiesTag.RemoveAt(0);

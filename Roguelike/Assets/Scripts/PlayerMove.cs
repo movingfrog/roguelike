@@ -10,16 +10,14 @@ public class Player : MonoBehaviour
     [Header("Value")]
     //공격 관련
     [SerializeField]
-    private float radius;
-    [SerializeField]
-    private LayerMask layer;
+    private float radius = 3f;
     private bool isEnemy;
 
     //이동 관련
     [SerializeField]
-    private float speedPower;
+    private float speedPower = 3f;
     [SerializeField]
-    private float jumpPower;
+    private float jumpPower = 5f;
 
 
     [Header("Components")]
