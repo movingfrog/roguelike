@@ -1,7 +1,5 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class StatManager : MonoBehaviour
@@ -64,6 +62,7 @@ public class StatManager : MonoBehaviour
     {
         startCorutine = true;
         Debug.Log("IsCorutine");
+        Player.ani.SetTrigger("isAttack");
         EnemyHP[0] -= PlayerATK;
         if(PlayerMP < MaxHP)
         {
@@ -74,6 +73,7 @@ public class StatManager : MonoBehaviour
             Debug.Log(Enemies[0].GetComponentInChildren<Transform>().tag);
             PlayerLevelAmount += (EnemiesTag[0].CompareTag("Level1")) ? EnemyEXP[0] : (EnemiesTag[0].CompareTag("Level2")) ? EnemyEXP[1] : EnemyEXP[2];
             LevelUp();
+            yield return new WaitForSeconds(0.5f);
             Destroy(Enemies[0]);
             Enemies.RemoveAt(0);
             EnemiesTag.RemoveAt(0);
@@ -82,11 +82,11 @@ public class StatManager : MonoBehaviour
         }
         Debug.Log("PlayerAttack");
         yield return new WaitForSeconds(Time);
-        if(Enemies != null)
+        startCorutine = false;
+        if (Enemies != null)
         {
             PlayerHP -= EnemyATK[0];
             Debug.Log("EnemyAttack");
         }
-        startCorutine = false;
     }
 }

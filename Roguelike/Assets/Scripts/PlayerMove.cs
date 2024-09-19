@@ -18,22 +18,34 @@ public class Player : MonoBehaviour
     private float speedPower = 3f;
     [SerializeField]
     private float jumpPower = 5f;
-
+    bool isJump = false;
+    [SerializeField]
+    private LayerMask layer;
 
     [Header("Components")]
     Rigidbody2D rb;
+    public static Animator ani;
 
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        ani = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W) && !isEnemy)
+        isJump = Physics2D.Raycast(transform.position, Vector2.down, 1f, layer);
+        Debug.DrawRay(transform.position, Vector2.down, Color.red, 1f);
+        
+        if (Input.GetKeyDown(KeyCode.W) && !isEnemy && isJump)
         {
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+            ani.SetBool("isJump", true);
+        }
+        if (isJump)
+        {
+            ani.SetBool("isJump", false);
         }
     }
 
@@ -47,19 +59,23 @@ public class Player : MonoBehaviour
             {
                 if (!statManager.startCorutine)
                 {
-                    StartCoroutine(statManager.Attack(3f));
+                    StartCoroutine(statManager.Attack(1.5f));
                 }
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 Debug.Log(rb.velocity);
                 isEnemy = true;
                 i++;
             }
-            else if(i == 0)
+            else if(i == 0 && !statManager.startCorutine)
             {
                 isEnemy = false;
                 rb.velocity = new Vector2(speedPower, rb.velocity.y);
             }
         }
+        if (rb.velocity.x > 0)
+            ani.SetBool("isWalk", true);
+        else
+            ani.SetBool("isWalk", false);
     }
     private void OnDrawGizmos()
     {
