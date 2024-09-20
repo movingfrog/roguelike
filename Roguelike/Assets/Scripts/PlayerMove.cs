@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     [Header("The Others Script")]
-    public StatManager statManager;
 
     [Header("Value")]
     //공격 관련
@@ -18,7 +15,7 @@ public class Player : MonoBehaviour
     private float speedPower = 3f;
     [SerializeField]
     private float jumpPower = 5f;
-    bool isJump = false;
+    private bool isJump = false;
     [SerializeField]
     private LayerMask layer;
 
@@ -43,7 +40,11 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             ani.SetBool("isJump", true);
         }
-        if (isJump)
+        if(rb.velocity.y < 0)
+        {
+            ani.SetTrigger("isDown");
+        }
+        if (isJump && rb.velocity.y == 0)
         {
             ani.SetBool("isJump", false);
         }
@@ -57,16 +58,16 @@ public class Player : MonoBehaviour
         {
             if (colliders.CompareTag("Enemy"))
             {
-                if (!statManager.startCorutine)
+                if (!StatManager.instance.startCorutine)
                 {
-                    StartCoroutine(statManager.Attack(1.5f));
+                    StartCoroutine(StatManager.instance.Attack(1.5f));
                 }
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 Debug.Log(rb.velocity);
                 isEnemy = true;
                 i++;
             }
-            else if(i == 0 && !statManager.startCorutine)
+            else if(i == 0 && !StatManager.instance.startCorutine)
             {
                 isEnemy = false;
                 rb.velocity = new Vector2(speedPower, rb.velocity.y);

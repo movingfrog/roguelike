@@ -7,19 +7,28 @@ public class StatManager : MonoBehaviour
     [Header("Any")]
     [HideInInspector]
     public bool startCorutine;
+    int playerNum;
+    public static StatManager instance;
 
     [Header("PlayerStats")]
+    private GameObject PlayerName;
+
+    //private float[] PlayerHP;
     public float PlayerHP;
     [SerializeField]
     private float MaxHP;
+    //private float[] MaxHP;
 
-    public float PlayerMP;
+    //private float[] PlayerMP;
+    private float PlayerMP;
     [SerializeField]
     private float MaxMP;
+    //private float[] MaxMP;
 
-    public float PlayerATK;
-    public float PlayerSkillATK1;
-    public int PlayerSkillATK2;
+    [SerializeField]
+    private float PlayerATK;
+    private float PlayerSkillATK1;
+    private float PlayerSkillATK2;
 
     public float PlayerLevelAmount;
     private float MaxEXP = 100;
@@ -37,12 +46,16 @@ public class StatManager : MonoBehaviour
     {
         PlayerHP = MaxHP;
         PlayerMP = MaxMP;
+        PlayerName = GameObject.FindGameObjectWithTag("Player").GetComponent<GameObject>();
+        //playerNum = PlayerName.name == "PlayerKnite" ? 0 : PlayerName.name == "PlayerFighter" ? 2 : 1;
     }
 
     public void StatUp()
     {
-        MaxHP += MaxHP / 10;
-        MaxMP += MaxMP / 10;
+        PlayerHP += MaxHP/10;
+        MaxHP += MaxHP/10;
+        PlayerMP += MaxMP/10;
+        MaxMP += MaxMP/10;
         PlayerATK += PlayerATK / 10;
     }
 
