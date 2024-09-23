@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
             {
                 if (!StatManager.instance.startCorutine)
                 {
-                    StartCoroutine(StatManager.instance.Attack(1.5f));
+                    
                 }
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 Debug.Log(rb.velocity);

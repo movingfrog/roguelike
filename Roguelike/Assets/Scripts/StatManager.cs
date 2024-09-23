@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StatManager : MonoBehaviour
 {
@@ -44,6 +45,7 @@ public class StatManager : MonoBehaviour
 
     private void Awake()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
         PlayerHP = MaxHP;
         PlayerMP = MaxMP;
         PlayerName = GameObject.FindGameObjectWithTag("Player").GetComponent<GameObject>();
@@ -71,35 +73,8 @@ public class StatManager : MonoBehaviour
         }
     }
 
-    public IEnumerator Attack(float Time)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        startCorutine = true;
-        Debug.Log("IsCorutine");
-        Player.ani.SetTrigger("isAttack");
-        EnemyHP[0] -= PlayerATK;
-        if(PlayerMP < MaxHP)
-        {
-            PlayerMP += 5;
-        }
-        if (EnemyHP[0] <= 0)
-        {
-            Debug.Log(Enemies[0].GetComponentInChildren<Transform>().tag);
-            PlayerLevelAmount += (EnemiesTag[0].CompareTag("Level1")) ? EnemyEXP[0] : (EnemiesTag[0].CompareTag("Level2")) ? EnemyEXP[1] : EnemyEXP[2];
-            LevelUp();
-            yield return new WaitForSeconds(0.5f);
-            Destroy(Enemies[0]);
-            Enemies.RemoveAt(0);
-            EnemiesTag.RemoveAt(0);
-            EnemyHP.RemoveAt(0);
-            EnemyATK.RemoveAt(0);
-        }
-        Debug.Log("PlayerAttack");
-        yield return new WaitForSeconds(Time);
-        startCorutine = false;
-        if (Enemies != null)
-        {
-            PlayerHP -= EnemyATK[0];
-            Debug.Log("EnemyAttack");
-        }
+
     }
 }

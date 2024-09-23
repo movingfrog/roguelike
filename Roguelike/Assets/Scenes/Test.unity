@@ -177,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7278836007441880636, guid: d5d86aaa28b18c7468191f06ddb4c6b7, type: 3}
       propertyPath: m_Name
-      value: PlayerKnite
+      value: PlayerKnight
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 539434700}
   - component: {fileID: 539434699}
   m_Layer: 0
-  m_Name: StatManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
