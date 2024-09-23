@@ -1,37 +1,77 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using UnityEngine;
+
+public enum Choice
+{
+    Attack,
+    Defense,
+    Recovery,
+}
 
 public class BattleManager : MonoBehaviour
 {
-    [Header("Bools")]
+    [Header("Chacking")]
     public bool isTurn;
     public bool isBattle;
 
-    public bool isAttack;
-    public bool isRecovery;
-    public bool isDefense;
+    public int EnemyChoice;
+
+    public Choice choice = new Choice();
 
     private void Update()
     {
-        if (isTurn&&isBattle)
+        if (isTurn&&!isBattle)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            Battle();
+        }
+        if (isBattle && !isTurn)
+        {
+            switch (choice)
             {
-                isAttack = true;
+                case Choice.Attack:
+                    break;
+                case Choice.Defense:
+                    break;
+                case Choice.Recovery:
+                    break;
             }
-            else if(Input.GetKeyDown(KeyCode.Alpha2))
+            EnemyChoice = Random.Range(0, 4);
+            switch (EnemyChoice)
             {
-                isRecovery = true;
+                case 1:
+                case 2:
+                case 3:
+                    break;
+                default:
+                    break;
             }
-            else if(Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                isDefense = true;
-            }
-            else
-            {
-                Debug.Log("잘못된 버튼입니다");
-            }
+            isBattle = false;
+        }
+    }
+
+    public void Battle()
+    {
+        isBattle = true;
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            choice = Choice.Attack;
+            isTurn = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            choice = Choice.Defense;
+            isTurn = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            choice = Choice.Recovery;
+            isTurn = false;
+        }
+        else
+        {
+            Debug.Log("잘못된 버튼입니다");
         }
     }
 }
