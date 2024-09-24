@@ -12,7 +12,7 @@ public enum Choice
 
 public class BattleManager : MonoBehaviour
 {
-    [Header("Chacking")]
+    [Header("Chackings")]
     public bool isTurn;
     public bool isBattle;
 
@@ -24,13 +24,34 @@ public class BattleManager : MonoBehaviour
     {
         if (isTurn&&!isBattle)
         {
-            Battle();
+            isBattle = true;
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                choice = Choice.Attack;
+                isTurn = false;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                choice = Choice.Defense;
+                isTurn = false;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                choice = Choice.Recovery;
+                isTurn = false;
+            }
+            else
+            {
+                Debug.Log("잘못된 버튼입니다");
+            }
         }
         if (isBattle && !isTurn)
         {
             switch (choice)
             {
                 case Choice.Attack:
+                    Player.ani.SetTrigger("isAttack");
+                    Player.ani.GetCurrentAnimatorStateInfo(0);
                     break;
                 case Choice.Defense:
                     break;
@@ -48,30 +69,6 @@ public class BattleManager : MonoBehaviour
                     break;
             }
             isBattle = false;
-        }
-    }
-
-    public void Battle()
-    {
-        isBattle = true;
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            choice = Choice.Attack;
-            isTurn = false;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            choice = Choice.Defense;
-            isTurn = false;
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            choice = Choice.Recovery;
-            isTurn = false;
-        }
-        else
-        {
-            Debug.Log("잘못된 버튼입니다");
         }
     }
 }

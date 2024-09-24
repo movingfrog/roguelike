@@ -65,12 +65,17 @@ public class StatManager : MonoBehaviour
     {
         if (PlayerLevelAmount >= MaxEXP)
         {
-            Debug.Log("adfs");
+            Debug.Log("asdf");
             PlayerLevelAmount -= MaxEXP;
             MaxEXP *= 1.5f;
             level++;
             StatUp();
         }
+    }
+
+    public void Attack()
+    {
+
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
