@@ -51,7 +51,10 @@ public class BattleManager : MonoBehaviour
             {
                 case Choice.Attack:
                     Player.ani.SetTrigger("isAttack");
-                    Player.ani.GetCurrentAnimatorStateInfo(0);
+                    if(Player.ani.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+                    {
+                        StatManager.instance
+                    }
                     break;
                 case Choice.Defense:
                     break;

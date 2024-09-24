@@ -75,7 +75,11 @@ public class StatManager : MonoBehaviour
 
     public void Attack()
     {
+        EnemyHP[0] -= PlayerATK;
+        if (EnemyHP[0] <= 0)
+        {
 
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
