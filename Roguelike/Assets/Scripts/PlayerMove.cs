@@ -3,7 +3,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Header("The Others Script")]
-    public BattleManager BattleManager;
 
     [Header("Value")]
     //공격 관련
@@ -59,16 +58,16 @@ public class Player : MonoBehaviour
         {
             if (colliders.CompareTag("Enemy"))
             {
-                if (!BattleManager.isTurn&&!BattleManager.isBattle)
+                if (!BattleManager.instance.isTurn&&!BattleManager.instance.isBattle)
                 {
-                    BattleManager.isTurn = true;
+                    BattleManager.instance.isTurn = true;
                 }
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 Debug.Log(rb.velocity);
                 isEnemy = true;
                 i++;
             }
-            else if(i == 0 && !StatManager.instance.startCorutine)
+            else if(i == 0 && !BattleManager.instance.isTurn && !BattleManager.instance.isBattle)
             {
                 isEnemy = false;
                 rb.velocity = new Vector2(speedPower, rb.velocity.y);

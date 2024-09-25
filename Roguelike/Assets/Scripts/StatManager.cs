@@ -5,34 +5,34 @@ using UnityEngine.SceneManagement;
 
 public class StatManager : MonoBehaviour
 {
+    [Header("StatManager")]
     [Header("Any")]
-    [HideInInspector]
-    public bool startCorutine;
-    int playerNum;
-    public static StatManager instance;
+    //int playerNum;
 
     [Header("PlayerStats")]
-    private GameObject PlayerName;
+    //protected GameObject PlayerName;
 
     //private float[] PlayerHP;
-    public float PlayerHP;
     [SerializeField]
-    private float MaxHP;
+    protected float PlayerHP;
+    [SerializeField]
+    protected float MaxHP = 100;
     //private float[] MaxHP;
 
     //private float[] PlayerMP;
-    private float PlayerMP;
     [SerializeField]
-    private float MaxMP;
+    protected float PlayerMP;
+    [SerializeField]
+    protected float MaxMP = 100;
     //private float[] MaxMP;
 
     [SerializeField]
-    private float PlayerATK;
-    private float PlayerSkillATK1;
-    private float PlayerSkillATK2;
+    protected float PlayerATK = 10;
+    //protected float PlayerSkillATK1;
+    //protected float PlayerSkillATK2;
 
     public float PlayerLevelAmount;
-    private float MaxEXP = 100;
+    protected float MaxEXP = 100;
     [HideInInspector]
     public int level = 1;
 
@@ -41,18 +41,19 @@ public class StatManager : MonoBehaviour
     public List<GameObject> EnemiesTag = new List<GameObject>();
     public List<float> EnemyHP = new List<float>();
     public List<float> EnemyATK = new List<float>();
+    public List<Animator> EnemyAni = new List<Animator>();
     public float[] EnemyEXP;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         PlayerHP = MaxHP;
         PlayerMP = MaxMP;
-        PlayerName = GameObject.FindGameObjectWithTag("Player").GetComponent<GameObject>();
+        //PlayerName = GameObject.FindGameObjectWithTag("Player").GetComponent<GameObject>();
         //playerNum = PlayerName.name == "PlayerKnite" ? 0 : PlayerName.name == "PlayerFighter" ? 2 : 1;
     }
 
-    public void StatUp()
+    protected void StatUp()
     {
         PlayerHP += MaxHP/10;
         MaxHP += MaxHP/10;
@@ -61,7 +62,7 @@ public class StatManager : MonoBehaviour
         PlayerATK += PlayerATK / 10;
     }
 
-    public void LevelUp()
+    protected void LevelUp()
     {
         if (PlayerLevelAmount >= MaxEXP)
         {
@@ -73,17 +74,13 @@ public class StatManager : MonoBehaviour
         }
     }
 
-    public void Attack()
+    protected void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        EnemyHP[0] -= PlayerATK;
-        if (EnemyHP[0] <= 0)
-        {
 
-        }
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    void OnDestroy()
     {
-
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
