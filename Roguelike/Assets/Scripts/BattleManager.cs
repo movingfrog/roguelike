@@ -66,13 +66,14 @@ public class BattleManager : StatManager
         yield return new WaitForSeconds(attackTime);
         if (EnemyHP[0] <= 0)
         {
-            Destroy(Enemies[0], 3);
+            Destroy(Enemies[0], 0.8f);
             EnemyAni[0].SetTrigger("isDie");
             PlayerLevelAmount += (EnemiesTag[0].CompareTag("Level1")) ? EnemyEXP[0] : (EnemiesTag[0].CompareTag("Level2")) ? EnemyEXP[1] : EnemyEXP[2];
             if (PlayerLevelAmount >= MaxEXP)
             {
                 LevelUp();
             }
+            yield return new WaitUntil(() => Enemies[0] == null);
             Enemies.RemoveAt(0);
             EnemiesTag.RemoveAt(0);
             EnemyHP.RemoveAt(0);
@@ -110,44 +111,49 @@ public class BattleManager : StatManager
         isStart = false;
     }
 
-    private void Update()
+    protected override void Update()
     {
-        if(delayTime >= maxDelayTime)
+        if(Time.timeScale != 0)
         {
-            Player.ani.SetBool("isDamaged", false);
-            if (isTurn&&!isBattle)
+            if (delayTime >= maxDelayTime)
             {
-                isBattle = true;
-                if (Input.GetKeyDown(KeyCode.Q))
+                Player.ani.SetBool("isDamaged", false);
+                if (isTurn && !isBattle)
                 {
-                    choice = Choice.Attack;
-                    isTurn = false;
+                    isBattle = true;
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        choice = Choice.Attack;
+                        isTurn = false;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.W))
+                    {
+                        choice = Choice.Defense;
+                        isTurn = false;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        choice = Choice.Recovery;
+                        isTurn = false;
+                    }
+                    else
+                    {
+                        Debug.Log("잘못된 버튼입니다");
+                        isBattle = false;
+                    }
                 }
-                else if (Input.GetKeyDown(KeyCode.W))
+                if (isBattle && !isTurn)
                 {
-                    choice = Choice.Defense;
-                    isTurn = false;
-                }
-                else if (Input.GetKeyDown(KeyCode.E))
-                {
-                    choice = Choice.Recovery;
-                    isTurn = false;
-                }
-                else
-                {
-                    Debug.Log("잘못된 버튼입니다");
-                    isBattle = false;
+                    delayTime = 0;
+                    StartCoroutine(BattleSystem(giveAndTake));
+
                 }
             }
-            if (isBattle && !isTurn)
+            else if (!isStart)
             {
-                delayTime = 0;
-                StartCoroutine(BattleSystem(giveAndTake));
+                delayTime += Time.deltaTime;
             }
         }
-        else if(!isStart)
-        {
-            delayTime += Time.deltaTime;
-        }
+        base.Update();
     }
 }

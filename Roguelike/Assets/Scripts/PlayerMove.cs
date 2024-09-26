@@ -32,51 +32,56 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        isJump = Physics2D.Raycast(transform.position, Vector2.down, 1f, layer);
-        Debug.DrawRay(transform.position, Vector2.down, Color.red, 1f);
+        if(Time.timeScale != 0)
+        {
+            isJump = Physics2D.Raycast(transform.position, Vector2.down, 1f, layer);
+            Debug.DrawRay(transform.position, Vector2.down, Color.red, 1f);
         
-        if (Input.GetKeyDown(KeyCode.W) && !isEnemy && isJump)
-        {
-            rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-            ani.SetBool("isJump", true);
-        }
-        if(rb.velocity.y < 0)
-        {
-            ani.SetTrigger("isDown");
-        }
-        if (isJump && rb.velocity.y == 0)
-        {
-            ani.SetBool("isJump", false);
+            if (Input.GetKeyDown(KeyCode.W) && !isEnemy && isJump)
+            {
+                rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+                ani.SetBool("isJump", true);
+            }
+            if(rb.velocity.y < 0)
+            {
+                ani.SetTrigger("isDown");
+            }
+            if (isJump && rb.velocity.y == 0)
+            {
+                ani.SetBool("isJump", false);
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        int i = 0;
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, radius);
-        foreach(Collider2D colliders in collider)
+        if (Time.timeScale != 0)
         {
-            if (colliders.CompareTag("Enemy"))
+            bool isUse = true;
+            Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, radius);
+            foreach(Collider2D colliders in collider)
             {
-                if (!BattleManager.instance.isTurn&&!BattleManager.instance.isBattle)
+                if (colliders.CompareTag("Enemy"))
                 {
-                    BattleManager.instance.isTurn = true;
+                    if (!BattleManager.instance.isTurn&&!BattleManager.instance.isBattle)
+                    {
+                        BattleManager.instance.isTurn = true;
+                    }
+                    rb.velocity = new Vector2(0, rb.velocity.y);
+                    isEnemy = true;
+                    isUse = false;
                 }
-                rb.velocity = new Vector2(0, rb.velocity.y);
-                Debug.Log(rb.velocity);
-                isEnemy = true;
-                i++;
+                else if(isUse && !BattleManager.instance.isTurn && !BattleManager.instance.isBattle)
+                {
+                    isEnemy = false;
+                    rb.velocity = new Vector2(speedPower, rb.velocity.y);
+                }
             }
-            else if(i == 0 && !BattleManager.instance.isTurn && !BattleManager.instance.isBattle)
-            {
-                isEnemy = false;
-                rb.velocity = new Vector2(speedPower, rb.velocity.y);
-            }
+                if (rb.velocity.x > 0)
+                    ani.SetBool("isWalk", true);
+                else
+                    ani.SetBool("isWalk", false);
         }
-        if (rb.velocity.x > 0)
-            ani.SetBool("isWalk", true);
-        else
-            ani.SetBool("isWalk", false);
     }
     private void OnDrawGizmos()
     {

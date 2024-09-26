@@ -7,6 +7,7 @@ public class StatManager : MonoBehaviour
 {
     [Header("StatManager")]
     [Header("Any")]
+    public bool isDie = false;
     //int playerNum;
 
     [Header("PlayerStats")]
@@ -51,6 +52,20 @@ public class StatManager : MonoBehaviour
         PlayerMP = MaxMP;
         //PlayerName = GameObject.FindGameObjectWithTag("Player").GetComponent<GameObject>();
         //playerNum = PlayerName.name == "PlayerKnite" ? 0 : PlayerName.name == "PlayerFighter" ? 2 : 1;
+    }
+
+    protected virtual void Update()
+    {
+        if(PlayerHP <= 0 && !isDie)
+        {
+            isDie = true;
+            Player.ani.SetTrigger("isDie");
+            if(Player.ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
+            {
+                Debug.Log("YouAreDead");
+                Time.timeScale = 0;
+            }
+        }
     }
 
     protected void StatUp()
