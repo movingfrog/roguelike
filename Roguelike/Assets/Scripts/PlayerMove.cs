@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
             isJump = Physics2D.Raycast(transform.position, Vector2.down, 1f, layer);
             Debug.DrawRay(transform.position, Vector2.down, Color.red, 1f);
         
-            if (Input.GetKeyDown(KeyCode.W) && !isEnemy && isJump)
+            if (Input.GetKeyDown(KeyCode.Space) && !isEnemy && isJump)
             {
                 rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
                 ani.SetBool("isJump", true);

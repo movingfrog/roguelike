@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum Choice
 {
@@ -105,7 +106,7 @@ public class BattleManager : StatManager
                     break;
             }
         }
-        PlayerHP += Damage - 10 < 0 ? 0 : Damage - 10;
+        PlayerHP += Damage - 10 <= 0 ? 0 : Damage - 10;
         isBattle = false;
         Player.ani.SetBool("isDamaged", false);
         isStart = false;
@@ -148,6 +149,8 @@ public class BattleManager : StatManager
                     delayTime = 0;
                     StartCoroutine(BattleSystem(giveAndTake));
 
+                    Image HPbar = GameObject.FindGameObjectWithTag("PHPbar").GetComponent<Image>();
+                    HPbar.fillAmount = PlayerHP / MaxHP;
                 }
             }
             else if (!isStart)
