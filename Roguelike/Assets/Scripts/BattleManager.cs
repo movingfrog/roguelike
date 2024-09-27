@@ -56,6 +56,8 @@ public class BattleManager : StatManager
                 Debug.Log("attack");
                 EnemyAni[0].SetTrigger("isDamaged");
                 EnemyHP[0] -= PlayerATK;
+                if (PlayerMP < MaxMP)
+                    PlayerMP += PlayerATK * 2;
                 break;
             case Choice.Defense:
                 Player.ani.SetTrigger("isDefense");
@@ -70,10 +72,7 @@ public class BattleManager : StatManager
             Destroy(Enemies[0], 0.8f);
             EnemyAni[0].SetTrigger("isDie");
             PlayerLevelAmount += (EnemiesTag[0].CompareTag("Level1")) ? EnemyEXP[0] : (EnemiesTag[0].CompareTag("Level2")) ? EnemyEXP[1] : EnemyEXP[2];
-            if (PlayerLevelAmount >= MaxEXP)
-            {
                 LevelUp();
-            }
             yield return new WaitUntil(() => Enemies[0] == null);
             Enemies.RemoveAt(0);
             EnemiesTag.RemoveAt(0);

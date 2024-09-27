@@ -77,10 +77,10 @@ public class Player : MonoBehaviour
                     rb.velocity = new Vector2(speedPower, rb.velocity.y);
                 }
             }
-                if (rb.velocity.x > 0)
-                    ani.SetBool("isWalk", true);
-                else
-                    ani.SetBool("isWalk", false);
+            if (rb.velocity.x > 0)
+                ani.SetBool("isWalk", true);
+            else
+                ani.SetBool("isWalk", false);
         }
     }
     private void OnDrawGizmos()
