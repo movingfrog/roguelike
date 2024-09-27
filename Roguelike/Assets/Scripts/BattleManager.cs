@@ -109,11 +109,12 @@ public class BattleManager : StatManager
         isBattle = false;
         Player.ani.SetBool("isDamaged", false);
         isStart = false;
+        Die();
     }
 
-    protected override void Update()
+    protected void Update()
     {
-        if(Time.timeScale != 0)
+        if(!isDie)
         {
             if (delayTime >= maxDelayTime)
             {
@@ -154,6 +155,5 @@ public class BattleManager : StatManager
                 delayTime += Time.deltaTime;
             }
         }
-        base.Update();
     }
 }

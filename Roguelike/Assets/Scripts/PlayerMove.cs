@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if(Time.timeScale != 0)
+        if(!BattleManager.instance.isDie)
         {
             isJump = Physics2D.Raycast(transform.position, Vector2.down, 1f, layer);
             Debug.DrawRay(transform.position, Vector2.down, Color.red, 1f);

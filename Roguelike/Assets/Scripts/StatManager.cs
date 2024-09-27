@@ -54,18 +54,22 @@ public class StatManager : MonoBehaviour
         //playerNum = PlayerName.name == "PlayerKnite" ? 0 : PlayerName.name == "PlayerFighter" ? 2 : 1;
     }
 
-    protected virtual void Update()
+    protected void Die()
     {
-        if(PlayerHP <= 0 && !isDie)
+        if(PlayerHP <= 0)
         {
-            isDie = true;
-            Player.ani.SetTrigger("isDie");
-            if(Player.ani.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.8f)
-            {
-                Debug.Log("YouAreDead");
-                Time.timeScale = 0;
-            }
+            if (!isDie)
+                Player.ani.SetTrigger("isDie");
+            StartCoroutine(die(3f));
         }
+    }
+
+    protected IEnumerator die(float time)
+    {
+        isDie = true;
+        yield return new WaitForSeconds(time);
+        Debug.Log("YouAreDead");
+        Time.timeScale = 0;
     }
 
     protected void StatUp()
