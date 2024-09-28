@@ -74,22 +74,27 @@ public class StatManager : MonoBehaviour
 
     protected void StatUp()
     {
-        PlayerHP += MaxHP/10;
-        MaxHP += MaxHP/10;
-        PlayerMP += MaxMP/10;
-        MaxMP += MaxMP/10;
-        PlayerATK += PlayerATK / 10;
+        PlayerHP += MaxHP/ (10 * level / 5);
+        MaxHP += MaxHP/(10 * level / 5);
+        PlayerMP += MaxMP/ (10 * level / 5);
+        MaxMP += MaxMP/ (10 * level / 5);
+        PlayerATK += PlayerATK / (10 * level / 5);
+        PlayerHP = Mathf.Floor(PlayerHP * 10) / 10;
+        MaxHP = Mathf.Floor(MaxHP * 10) / 10;
+        PlayerMP = Mathf.Floor(PlayerMP * 10) / 10;
+        MaxMP = Mathf.Floor(MaxMP * 10) / 10;
+        PlayerATK = Mathf.Floor(PlayerATK * 10) / 10;
     }
 
     protected void LevelUp()
     {
         if (PlayerLevelAmount >= MaxEXP)
         {
-            Debug.Log("asdf");
+            Debug.Log("LevelUP");
             PlayerLevelAmount -= MaxEXP;
             MaxEXP *= 1.5f;
-            level++;
             StatUp();
+            level++;
         }
     }
 
