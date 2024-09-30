@@ -3,6 +3,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Header("The Others Script")]
+    GameObject UIobject;
 
     [Header("Value")]
     //공격 관련
@@ -28,6 +29,8 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         ani = GetComponent<Animator>();
+        UIobject = GameObject.FindGameObjectWithTag("UI");
+        Debug.Log(UIobject);
     }
 
     private void Update()
@@ -66,6 +69,8 @@ public class Player : MonoBehaviour
                     if (!BattleManager.instance.isTurn&&!BattleManager.instance.isBattle)
                     {
                         BattleManager.instance.isTurn = true;
+                        Debug.Log(UIobject);
+                        UIobject.gameObject.SetActive(true);
                     }
                     rb.velocity = new Vector2(0, rb.velocity.y);
                     isEnemy = true;
@@ -75,6 +80,9 @@ public class Player : MonoBehaviour
                 {
                     isEnemy = false;
                     rb.velocity = new Vector2(speedPower, rb.velocity.y);
+                    Debug.Log(UIobject);
+
+                    UIobject.gameObject.SetActive(false);
                 }
             }
             if (rb.velocity.x > 0)

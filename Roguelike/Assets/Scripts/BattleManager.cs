@@ -26,8 +26,7 @@ public class BattleManager : StatManager
     [Header("Time")]
     [SerializeField]
     private float maxDelayTime;
-    [SerializeField]
-    private float giveAndTake = 1f;
+    public float giveAndTake = 1f;
     private float delayTime;
 
     protected override void Awake()
@@ -46,8 +45,9 @@ public class BattleManager : StatManager
 
     float Damage = 0;
 
-    IEnumerator BattleSystem(float attackTime)
+    public IEnumerator BattleSystem(float attackTime, Choice choice)
     {
+        delayTime = 0;
         isStart = true;
         switch (choice)
         {
@@ -110,6 +110,8 @@ public class BattleManager : StatManager
         Player.ani.SetBool("isDamaged", false);
         isStart = false;
         Die();
+        Image HPbar = GameObject.FindGameObjectWithTag("PHPbar").GetComponent<Image>();
+        HPbar.fillAmount = PlayerHP / MaxHP;
     }
 
     protected void Update()
@@ -145,11 +147,7 @@ public class BattleManager : StatManager
                 }
                 if (isBattle && !isTurn)
                 {
-                    delayTime = 0;
-                    StartCoroutine(BattleSystem(giveAndTake));
-
-                    Image HPbar = GameObject.FindGameObjectWithTag("PHPbar").GetComponent<Image>();
-                    HPbar.fillAmount = PlayerHP / MaxHP;
+                    StartCoroutine(BattleSystem(giveAndTake, choice));
                 }
             }
             else if (!isStart)
