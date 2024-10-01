@@ -24,10 +24,9 @@ public class BattleManager : StatManager
     
     public Choice choice = new Choice();
     [Header("Time")]
-    [SerializeField]
-    private float maxDelayTime;
+    public float maxDelayTime;
     public float giveAndTake = 1f;
-    private float delayTime;
+    public float delayTime;
 
     protected override void Awake()
     {

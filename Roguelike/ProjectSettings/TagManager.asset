@@ -8,6 +8,7 @@ TagManager:
   - Level2
   - Enemy
   - PHPbar
+  - UI
   layers:
   - Default
   - TransparentFX
